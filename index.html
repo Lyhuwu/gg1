@@ -28,8 +28,14 @@
     pointer-events: none; 
   }
 
-  .anim-group img { opacity: 0; }
-  .anim-group img.active { opacity: 1; }
+  /* --- AQUÍ ESTÁ EL PRIMER AJUSTE: TRANSICIÓN SUAVE --- */
+  .anim-group img { 
+    opacity: 0; 
+    transition: opacity 0.1s ease; 
+  }
+  .anim-group img.active { 
+    opacity: 1; 
+  }
 
   #hitboxes {
     position: absolute;
@@ -40,9 +46,8 @@
   
   .hitbox {
     position: absolute;
-    /* ESTA ES LA LÍNEA QUE DEBES BORRAR AL FINAL PARA OCULTAR LAS CAJAS */
+    /* Borra o comenta la siguiente línea cuando ya no necesites ver los cuadros rojos */
     border: 3px solid red; background: rgba(255, 0, 0, 0.3);
-    
     cursor: pointer;
   }
 
@@ -183,8 +188,7 @@
 
   <!-- === CAJAS ROJAS (HITBOXES) === -->
   <div id="hitboxes">
-    <!-- Para moverlas, cambia los números de 'top' y 'left' -->
-    
+    <!-- Ajusta los valores de top y left para cada cuadrito interactivo -->
     <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
     <div class="hitbox" style="top: 45%; left: 60%; width: 20%; height: 15%;" onclick="activarInteraccion('70%', '50%', 'ui-pinwi')"></div>
     <div class="hitbox" style="top: 40%; left: 10%; width: 15%; height: 10%;" onclick="activarInteraccion('15%', '45%', 'ui-marco')"></div>
@@ -257,7 +261,7 @@
 </div>
 
 <script>
-  // LÓGICA DE ANIMACIÓN CRAYOLA
+  // --- AQUÍ ESTÁ EL SEGUNDO AJUSTE: VELOCIDAD A 80 MILISEGUNDOS ---
   setInterval(() => {
     const grupos = document.querySelectorAll('.anim-group');
     grupos.forEach(grupo => {
@@ -268,7 +272,7 @@
       let siguienteIndex = (indexActivo + 1) % frames.length;
       frames[siguienteIndex].classList.add('active');
     });
-  }, 200);
+  }, 80);
 
   // LÓGICA DE ZOOM
   const camara = document.getElementById('camara');
