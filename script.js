@@ -17,7 +17,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/ventana.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 28, top: 8, width: 42, height: 12 }
+    hitbox: { left: 35, top: 5, width: 35, height: 11 }
   },
   {
     nombre: "florero",
@@ -35,7 +35,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/marco.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 70, top: 20, width: 15, height: 11 }
+    hitbox: { left: 70, top: 15, width: 15, height: 11 }
   },
   {
     nombre: "pinwi",
@@ -46,7 +46,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/pinwi.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 14, top: 16, width: 18, height: 14 }
+    hitbox: { left: 12, top: 12, width: 22, height: 21 }
   },
   {
     nombre: "planta",
@@ -93,7 +93,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/calendario.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 73, top: 79, width: 18, height: 8 }
+    hitbox: { left: 73, top: 83, width: 18, height: 8 }
   },
   {
     nombre: "sobre",
@@ -103,7 +103,7 @@ const objetos = [
     interactivo: true,
     tipo: "carta",
     carta: "Escribí acá el texto de la carta que querés mostrar cuando se toca el sobre.",
-    hitbox: { left: 79, top: 88, width: 16, height: 8 }
+    hitbox: { left: 82, top: 92, width: 15, height: 8 }
   },
   {
     nombre: "tocadiscos",
@@ -111,7 +111,7 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 10,
     interactivo: true,
-    hitbox: { left: 8, top: 80, width: 22, height: 14 }
+    hitbox: { left: 8, top: 85, width: 22, height: 14 }
   },
   {
     nombre: "tele",
@@ -122,7 +122,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/tele.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 8, top: 55, width: 20, height: 16 }
+    hitbox: { left: 8, top: 55, width: 20, height: 25 }
   },
 ];
 
