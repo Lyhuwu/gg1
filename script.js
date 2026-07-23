@@ -68,9 +68,18 @@ const objetos = [
     foto: "img/foto-poster.jpg", 
   },
   {
+    nombre: "calendario",
+    archivos: ["img/4-calendario1.png", "img/4-calendario2.png"],
+    velocidad: VELOCIDAD.NORMAL,
+    capa: 4,
+    interactivo: true,
+    tipo: "carta",
+    carta: "¡Nuestra fecha más especial!", 
+  },
+  {
     nombre: "sobre",
     archivos: ["img/4-sobre1.png", "img/4-sobre2.png", "img/4-sobre3.png"],
-    velocidad: VELOCIDAD.LENTA,
+    velocidad: VELOCIDAD.MEDIA,
     capa: 4,
     interactivo: true,
     tipo: "carta",
@@ -79,16 +88,16 @@ const objetos = [
   {
     nombre: "tocadiscos",
     archivos: ["img/10-tocadiscos1.png", "img/10-tocadiscos2.png"],
-    velocidad: VELOCIDAD.MEDIA,
+    velocidad: VELOCIDAD.NORMAL,
     capa: 10,
-    interactivo: false,
+    interactivo: true,
   },
   {
     nombre: "tele",
     archivos: ["img/10-tele1.png", "img/10-tele2.png"],
     velocidad: VELOCIDAD.NORMAL,
     capa: 10,
-    interactivo: false,
+    interactivo: true,
   },
 ];
 
