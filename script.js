@@ -12,7 +12,10 @@ const objetos = [
     archivos: ["img/2-ventana1.png", "img/2-ventana2.png", "img/2-ventana3.png"],
     velocidad: VELOCIDAD.MUY_LENTA,
     capa: 2,
-    interactivo: false,
+    interactivo: true,
+    tipo: "ambos",
+    foto: "img/ventana.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
   },
   {
     nombre: "florero",
@@ -27,15 +30,19 @@ const objetos = [
     velocidad: VELOCIDAD.MUY_LENTA,
     capa: 4,
     interactivo: true,
-    tipo: "foto",
-    foto: "img/foto-marco.jpg", 
+    tipo: "ambos",
+    foto: "img/marco.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
   },
   {
     nombre: "pinwi",
     archivos: ["img/4-pinwi1.png", "img/4-pinwi2.png"],
     velocidad: VELOCIDAD.NORMAL,
     capa: 4,
-    interactivo: false,
+    interactivo: true,
+    tipo: "ambos",
+    foto: "img/pinwi.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
   },
   {
     nombre: "planta",
@@ -56,7 +63,10 @@ const objetos = [
     archivos: ["img/4-pollito1.png", "img/4-pollito2.png", "img/4-pollito3.png", "img/4-pollito4.png"],
     velocidad: VELOCIDAD.RAPIDA,
     capa: 4,
-    interactivo: false,
+    interactivo: true,
+    tipo: "ambos",
+    foto: "img/pollito.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
   },
   {
     nombre: "poster",
@@ -64,8 +74,9 @@ const objetos = [
     velocidad: VELOCIDAD.LENTA,
     capa: 4,
     interactivo: true,
-    tipo: "foto",
-    foto: "img/foto-poster.jpg", 
+    tipo: "ambos",
+    foto: "img/poster.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!", 
   },
   {
     nombre: "calendario",
@@ -73,8 +84,9 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 4,
     interactivo: true,
-    tipo: "carta",
-    carta: "¡Nuestra fecha más especial!", 
+     tipo: "ambos",
+    foto: "img/calendario.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
   },
   {
     nombre: "sobre",
@@ -98,6 +110,9 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 10,
     interactivo: true,
+    tipo: "ambos",
+    foto: "img/tele.jpg", // Recuerda subir esta foto a tu carpeta img
+    carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
   },
 ];
 
