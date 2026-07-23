@@ -5,78 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Nuestro Aniversario</title>
 <style>
-  body, html {
+  /* Soluciona el problema de la barra de navegación del celular */
+  html, body {
     margin: 0; padding: 0;
-    width: 100vw; height: 100vh;
-    background-color: #0d0d1a; /* Color de las franjas si tu pantalla es muy larga */
+    width: 100%; height: 100%;
+    background-color: #1a1a24; 
     display: flex; justify-content: center; align-items: center;
     overflow: hidden; font-family: sans-serif; touch-action: none; 
   }
 
-  /* EL TRUCO PARA QUE NADA SE CORTE: La caja 9:16 perfecta */
+  /* LA CAJA INTELIGENTE: Jamás volverá a recortar tu tapete */
   #lienzo-juego {
     position: relative;
-    width: 100%; height: 100%;
     aspect-ratio: 9 / 16;
-    max-width: calc(100vh * (9 / 16));
-    max-height: calc(100vw * (16 / 9));
-    margin: auto;
-    transition: transform 0.8s ease-in-out; 
+    max-width: 100%;
+    max-height: 100%;
   }
 
-  /* El fondo estático que no parpadea nunca */
-  .fondo-base {
-    position: absolute; top: 0; left: 0;
+  /* Las imágenes respetan la caja al 100% */
+  .fondo-base, .master-frame {
+    position: absolute;
+    top: 0; left: 0;
     width: 100%; height: 100%;
-    z-index: 1;
+    object-fit: contain; 
   }
 
-  /* Configuración base para los frames animados */
+  .fondo-base { z-index: 1; }
+  
+  /* El cambio de visibilidad quita el efecto de "foco prendiéndose y apagándose" */
   .master-frame {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; 
+    visibility: hidden; 
     z-index: 2;
-    opacity: 0; 
   }
-
-  /* LA MAGIA DE LA FLUIDEZ (ANIMACIÓN CSS PURA) 
-   Cada frame dura 0.15s, sumando 0.45s en total. Sin retrasos ni parpadeos.
-  */
-  #frame1 { animation: showFrame1 0.45s infinite; }
-  #frame2 { animation: showFrame2 0.45s infinite; }
-  #frame3 { animation: showFrame3 0.45s infinite; }
-
-  @keyframes showFrame1 { 
-    0%, 33.33% { opacity: 1; } 
-    33.34%, 100% { opacity: 0; } 
-  }
-  @keyframes showFrame2 { 
-    0%, 33.33% { opacity: 0; } 
-    33.34%, 66.66% { opacity: 1; } 
-    66.67%, 100% { opacity: 0; } 
-  }
-  @keyframes showFrame3 { 
-    0%, 66.66% { opacity: 0; } 
-    66.67%, 100% { opacity: 1; } 
+  .master-frame.active { 
+    visibility: visible; 
   }
 
   /* HITBOXES */
   #hitboxes {
-    position: absolute; top: 0; left: 0;
+    position: absolute;
+    top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 50; 
   }
   .hitbox {
     position: absolute;
-    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borrar al terminar de acomodar */
+    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borrar esto al terminar de acomodar */
     cursor: pointer;
   }
 
-  /* INTERFACES (Cartitas) */
+  /* INTERFACES (Universos y Cartitas) */
   .interfaz-ui {
     position: absolute; top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.75);
     z-index: 100;
     display: flex; flex-direction: column;
@@ -114,18 +95,20 @@
   
   <img src="img/fondoestatico.png" class="fondo-base" alt="Fondo Habitación">
 
-  <img src="img/frame1.png" id="frame1" class="master-frame">
-  <img src="img/frame2.png" id="frame2" class="master-frame">
-  <img src="img/frame3.png" id="frame3" class="master-frame">
+  <!-- Tus 3 frames animados listos para rotar -->
+  <img src="img/frame1.png" class="master-frame active">
+  <img src="img/frame2.png" class="master-frame">
+  <img src="img/frame3.png" class="master-frame">
 
   <div id="hitboxes">
-    <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
-    <div class="hitbox" style="top: 45%; left: 60%; width: 20%; height: 15%;" onclick="activarInteraccion('70%', '50%', 'ui-pinwi')"></div>
-    <div class="hitbox" style="top: 40%; left: 10%; width: 15%; height: 10%;" onclick="activarInteraccion('15%', '45%', 'ui-marco')"></div>
-    <div class="hitbox" style="top: 60%; left: 40%; width: 15%; height: 10%;" onclick="activarInteraccion('45%', '65%', 'ui-pollito')"></div>
-    <div class="hitbox" style="top: 25%; left: 10%; width: 20%; height: 25%;" onclick="activarInteraccion('20%', '35%', 'ui-poster')"></div>
-    <div class="hitbox" style="top: 50%; left: 35%; width: 30%; height: 15%;" onclick="activarInteraccion('50%', '55%', 'ui-tele')"></div>
-    <div class="hitbox" style="top: 80%; left: 70%; width: 20%; height: 10%;" onclick="activarInteraccion('50%', '50%', 'ui-sobre')"></div>
+    <!-- El código HTML ahora es súper limpio, solo llamas a la UI correspondiente -->
+    <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('ui-ventana')"></div>
+    <div class="hitbox" style="top: 45%; left: 60%; width: 20%; height: 15%;" onclick="activarInteraccion('ui-pinwi')"></div>
+    <div class="hitbox" style="top: 40%; left: 10%; width: 15%; height: 10%;" onclick="activarInteraccion('ui-marco')"></div>
+    <div class="hitbox" style="top: 60%; left: 40%; width: 15%; height: 10%;" onclick="activarInteraccion('ui-pollito')"></div>
+    <div class="hitbox" style="top: 25%; left: 10%; width: 20%; height: 25%;" onclick="activarInteraccion('ui-poster')"></div>
+    <div class="hitbox" style="top: 50%; left: 35%; width: 30%; height: 15%;" onclick="activarInteraccion('ui-tele')"></div>
+    <div class="hitbox" style="top: 80%; left: 70%; width: 20%; height: 10%;" onclick="activarInteraccion('ui-sobre')"></div>
     <div class="hitbox" style="top: 70%; left: 10%; width: 25%; height: 15%;" onclick="reproducirMusica()"></div>
   </div>
 </div>
@@ -178,38 +161,30 @@
 <div id="ui-sobre" class="interfaz-ui">
   <div class="cartita" style="background: #fff9e6;">
     <h2>¡Feliz Aniversario!</h2>
-    <p>Mi persona favorita, aquí escribes tu carta más larga y especial.</p>
+    <p>Aquí escribes tu carta más larga y especial.</p>
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Guardar Carta</button>
   </div>
 </div>
 
 <script>
-  // ¡Fíjate cómo ya no hay código JavaScript para la animación de frames!
-  // Ahora todo se procesa súper rápido en el CSS de arriba.
+  // NUEVA EXPOSICIÓN A 450ms: Da el toque Stop-Motion
+  const frames = document.querySelectorAll('.master-frame');
+  let frameActual = 0;
 
-  // LÓGICA DE ZOOM Y CARTITAS
-  const lienzo = document.getElementById('lienzo-juego');
-  let zoomActivo = false;
+  setInterval(() => {
+    frames[frameActual].classList.remove('active');
+    frameActual = (frameActual + 1) % frames.length;
+    frames[frameActual].classList.add('active');
+  }, 450);
 
-  function activarInteraccion(x, y, idUi) {
-    if (zoomActivo) return; 
-    zoomActivo = true;
-
-    lienzo.style.transformOrigin = `${x} ${y}`;
-    lienzo.style.transform = 'scale(3.5)';
-
-    setTimeout(() => {
-      const ui = document.getElementById(idUi);
-      if(ui) ui.classList.add('visible');
-    }, 800);
+  // INTERACCIONES 
+  function activarInteraccion(idUi) {
+    const ui = document.getElementById(idUi);
+    if(ui) ui.classList.add('visible');
   }
 
   function cerrarInteraccion() {
     document.querySelectorAll('.interfaz-ui').forEach(ui => ui.classList.remove('visible'));
-    setTimeout(() => {
-      lienzo.style.transform = 'scale(1)';
-      zoomActivo = false;
-    }, 300);
   }
 
   // MÚSICA
@@ -225,14 +200,12 @@
     }
   }
 
-  // HERRAMIENTA DE CALIBRACIÓN (Toca para ver coordenadas)
+  // HERRAMIENTA DE CALIBRACIÓN 
   document.getElementById('hitboxes').addEventListener('click', function(e) {
     if(e.target.classList.contains('hitbox')) return;
-    
     let rect = this.getBoundingClientRect();
     let x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
     let y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
-    
     alert(`TOCASTE EN:\nX (left): ${x}%\nY (top): ${y}%`);
   });
 </script>
