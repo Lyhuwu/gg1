@@ -101,20 +101,6 @@ const objetos = [
     interactivo: false,
   },
   {
-    nombre: "planta",
-    archivos: ["4-planta1.png", "4-planta2.png"],
-    velocidad: VELOCIDAD.LENTA,
-    capa: 4,
-    interactivo: false,
-  },
-  {
-    nombre: "plantas",
-    archivos: ["4-plantas1.png", "4-plantas2.png"],
-    velocidad: VELOCIDAD.LENTA,
-    capa: 4,
-    interactivo: false,
-  },
-  {
     nombre: "pollito",
     archivos: ["4-pollito1.png", "4-pollito2.png", "4-pollito3.png", "4-pollito4.png"],
     velocidad: VELOCIDAD.RAPIDA,
