@@ -16,7 +16,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/ventana.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 30, top: 10, width: 40, height: 20 }
+    hitbox: { left: 22, top: 10, width: 56, height: 15 }
   },
   {
     nombre: "florero",
@@ -34,7 +34,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/marco.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 10, top: 40, width: 15, height: 10 }
+    hitbox: { left: 70, top: 24, width: 18, height: 14 }
   },
   {
     nombre: "pinwi",
@@ -45,7 +45,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/pinwi.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 60, top: 45, width: 20, height: 15 }
+    hitbox: { left: 10, top: 20, width: 25, height: 16 }
   },
   {
     nombre: "planta",
@@ -70,7 +70,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/pollito.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 40, top: 60, width: 15, height: 10 }
+    hitbox: { left: 62, top: 37, width: 22, height: 9 }
   },
   {
     nombre: "poster",
@@ -81,7 +81,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/poster.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!", 
-    hitbox: { left: 10, top: 25, width: 20, height: 25 }
+    hitbox: { left: 0, top: 34, width: 16, height: 20 }
   },
   {
     nombre: "calendario",
@@ -92,7 +92,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/calendario.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 70, top: 70, width: 20, height: 15 }
+    hitbox: { left: 72, top: 78, width: 20, height: 9 }
   },
   {
     nombre: "sobre",
@@ -102,7 +102,7 @@ const objetos = [
     interactivo: true,
     tipo: "carta",
     carta: "Escribí acá el texto de la carta que querés mostrar cuando se toca el sobre.",
-    hitbox: { left: 70, top: 80, width: 20, height: 10 }
+    hitbox: { left: 78, top: 86, width: 20, height: 8 }
   },
   {
     nombre: "tocadiscos",
@@ -110,7 +110,7 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 10,
     interactivo: true,
-    hitbox: { left: 10, top: 70, width: 25, height: 15 }
+    hitbox: { left: 5, top: 75, width: 28, height: 22 }
   },
   {
     nombre: "tele",
@@ -121,7 +121,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/tele.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 35, top: 50, width: 30, height: 15 }
+    hitbox: { left: 5, top: 52, width: 25, height: 21 }
   },
 ];
 
