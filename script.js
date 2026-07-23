@@ -10,7 +10,7 @@ const objetos = [
   {
     nombre: "ventana",
     archivos: ["img/2-ventana1.png", "img/2-ventana2.png", "img/2-ventana3.png"],
-    velocidad: VELOCIDAD.MUY_LENTA,
+    velocidad: VELOCIDAD.LENTA,
     capa: 2,
     interactivo: true,
     tipo: "ambos",
@@ -20,7 +20,7 @@ const objetos = [
   {
     nombre: "florero",
     archivos: ["img/4-florero1.png", "img/4-florero2.png"],
-    velocidad: VELOCIDAD.LENTA,
+    velocidad: VELOCIDAD.RAPIDA,
     capa: 4,
     interactivo: false,
   },
@@ -37,7 +37,7 @@ const objetos = [
   {
     nombre: "pinwi",
     archivos: ["img/4-pinwi1.png", "img/4-pinwi2.png"],
-    velocidad: VELOCIDAD.NORMAL,
+    velocidad: VELOCIDAD.LENTA,
     capa: 4,
     interactivo: true,
     tipo: "ambos",
@@ -71,7 +71,7 @@ const objetos = [
   {
     nombre: "poster",
     archivos: ["img/4-poster1.png", "img/4-poster2.png", "img/4-poster3.png"],
-    velocidad: VELOCIDAD.LENTA,
+    velocidad: VELOCIDAD.RAPIDA,
     capa: 4,
     interactivo: true,
     tipo: "ambos",
@@ -91,7 +91,7 @@ const objetos = [
   {
     nombre: "sobre",
     archivos: ["img/4-sobre1.png", "img/4-sobre2.png", "img/4-sobre3.png"],
-    velocidad: VELOCIDAD.MEDIA,
+    velocidad: VELOCIDAD.LENTA,
     capa: 4,
     interactivo: true,
     tipo: "carta",
@@ -107,7 +107,7 @@ const objetos = [
   {
     nombre: "tele",
     archivos: ["img/10-tele1.png", "img/10-tele2.png"],
-    velocidad: VELOCIDAD.NORMAL,
+    velocidad: VELOCIDAD.RAPIDA,
     capa: 10,
     interactivo: true,
     tipo: "ambos",
