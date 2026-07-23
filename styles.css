@@ -1,0 +1,272 @@
+/* ============================================================
+   RESET Y BASE
+   Quitamos márgenes, evitamos selección/arrastre de imágenes y
+   desactivamos gestos del navegador que interfieren con el tap
+   (doble-tap-zoom, pull-to-refresh, halo azul al tocar, etc.)
+   ============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;           /* la escena nunca hace scroll ni se recorta con barras */
+  background: #000;
+  touch-action: manipulation; /* evita doble-tap-zoom sin bloquear el scroll del sistema */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  pointer-events: none; /* el hit-testing lo hace JS a mano (alfa), no el navegador */
+}
+
+/* ============================================================
+   PANTALLA DE CARGA
+   ============================================================ */
+#pantalla-carga {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #0b0b0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .6s ease;
+}
+#pantalla-carga.oculta {
+  opacity: 0;
+  pointer-events: none;
+}
+#barra-carga-contenedor {
+  width: 55vw;
+  max-width: 260px;
+  height: 3px;
+  background: rgba(255,255,255,.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+#barra-carga {
+  height: 100%;
+  width: 0%;
+  background: #e8ddc8;
+  transition: width .15s ease-out;
+}
+
+/* ============================================================
+   ESCENARIO (STAGE)
+   El wrapper ocupa toda la pantalla y centra al stage.
+   El stage conserva SIEMPRE la proporción 1080x1920: nunca se
+   recorta ni se deforma, sea cual sea el tamaño o la orientación
+   del dispositivo. El tamaño exacto en píxeles lo termina de
+   ajustar script.js (ver ajustarEscenario) para que sea preciso
+   en todos los navegadores, pero estas reglas ya dan un fallback
+   correcto por CSS puro con aspect-ratio.
+   ============================================================ */
+#stage-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  overflow: hidden;
+}
+
+#stage {
+  position: relative;
+  aspect-ratio: 1080 / 1920;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  transform-origin: center center;
+  transition: transform .5s cubic-bezier(.22,.61,.36,1), filter .5s ease;
+  will-change: transform; /* solo se activa durante el zoom de interacción */
+}
+
+/* Estado al abrir una ventana modal: leve zoom hacia el punto tocado
+   y oscurecido del fondo. La variable --origen-x/--origen-y la fija
+   script.js según el punto exacto donde el usuario tocó. */
+#stage.zoom {
+  transform: scale(1.06);
+}
+
+#fondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#capa-objetos {
+  position: absolute;
+  inset: 0;
+}
+
+/* Cada objeto animado es un único <img>. Se posiciona por defecto
+   cubriendo todo el stage (porque cada PNG ya trae únicamente su
+   parte dibujada y el resto transparente, tal como se describió).
+   Si algún dibujo en particular usa una región más chica, el propio
+   script ajusta su top/left/width/height al inyectarlo.
+   Durante la animación, script.js solo reasigna el .src de este
+   mismo elemento (a un frame ya precargado y decodificado): nunca
+   se crea ni destruye ningún <img>, así que esto es siempre una
+   operación barata de repintado puntual, no de layout. */
+.objeto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Los dibujos marcados como interactivos sí reciben eventos de
+   puntero (el resto los tiene desactivados vía la regla global
+   "img { pointer-events: none }"), tanto para poder mostrar el
+   cursor de "mano" en escritorio como recordatorio visual, aunque
+   la detección real de qué se tocó la sigue haciendo por completo
+   el chequeo de canal alfa en script.js, no el navegador. */
+.objeto.es-interactivo {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* ============================================================
+   OVERLAY OSCURO (detrás del modal)
+   ============================================================ */
+#overlay-oscuro {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s ease;
+}
+#overlay-oscuro.visible {
+  opacity: .55;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   MODAL ELEGANTE (foto / carta)
+   ============================================================ */
+#modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+#modal.abierto {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#modal-fondo {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 8, 6, 0.35);
+}
+
+#modal-contenido {
+  position: relative;
+  max-width: min(88vw, 420px);
+  max-height: 82vh;
+  background: #fbf7ee;
+  border-radius: 6px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.2);
+  padding: 22px;
+  transform: scale(.92) translateY(10px);
+  opacity: 0;
+  transition: transform .45s cubic-bezier(.22,.61,.36,1), opacity .35s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#modal.abierto #modal-contenido {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+#modal-cerrar {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #fbf7ee;
+  box-shadow: 0 3px 10px rgba(0,0,0,.3);
+  font-size: 20px;
+  line-height: 1;
+  color: #33302a;
+  cursor: pointer;
+}
+
+#modal-marco-foto {
+  display: none;
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+  border: 1px solid #e8e2d4;
+}
+#modal-marco-foto img {
+  display: block;
+  max-width: 78vw;
+  max-height: 62vh;
+  pointer-events: none;
+}
+
+#modal-carta {
+  display: none;
+  max-height: 66vh;
+  overflow-y: auto;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.65;
+  color: #33302a;
+  white-space: pre-wrap;
+  padding: 6px 4px;
+}
+
+/* Estado "modo foto" / "modo carta": el propio JS agrega una de
+   estas dos clases al #modal-contenido para mostrar solo lo que
+   corresponde */
+#modal-contenido.modo-foto #modal-marco-foto { display: block; }
+#modal-contenido.modo-carta #modal-carta { display: block; }
+
+/* ============================================================
+   MODO DEBUG (opcional, ver script.js)
+   Se activa añadiendo ?debug a la URL. Dibuja un contorno sobre
+   cada objeto y muestra coordenadas al tocar, para calibrar
+   posiciones/regiones sin tener que adivinar.
+   ============================================================ */
+.debug-contorno {
+  outline: 1px dashed rgba(255,0,120,.6);
+}
+#debug-info {
+  position: fixed;
+  bottom: 8px;
+  left: 8px;
+  z-index: 999;
+  background: rgba(0,0,0,.7);
+  color: #0f0;
+  font: 12px monospace;
+  padding: 6px 8px;
+  border-radius: 4px;
+  max-width: 90vw;
+  white-space: pre-wrap;
+}
