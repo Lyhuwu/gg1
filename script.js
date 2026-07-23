@@ -49,20 +49,6 @@ const objetos = [
     hitbox: { left: 12, top: 12, width: 22, height: 21 }
   },
   {
-    nombre: "planta",
-    archivos: ["img/4-planta1.png", "img/4-planta2.png"],
-    velocidad: VELOCIDAD.LENTA,
-    capa: 4,
-    interactivo: false,
-  },
-  {
-    nombre: "plantas",
-    archivos: ["img/4-plantas1.png", "img/4-plantas2.png"],
-    velocidad: VELOCIDAD.LENTA,
-    capa: 4,
-    interactivo: false,
-  },
-  {
     nombre: "pollito",
     archivos: ["img/4-pollito1.png", "img/4-pollito2.png", "img/4-pollito3.png", "img/4-pollito4.png"],
     velocidad: VELOCIDAD.MUY_RAPIDA,
