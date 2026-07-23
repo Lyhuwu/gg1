@@ -8,26 +8,34 @@
   body, html {
     margin: 0; padding: 0;
     width: 100vw; height: 100vh;
-    background-color: #1a1a24; 
+    background-color: #1a1a24; /* Este es el color de las franjas por si sobra pantalla */
     display: flex; justify-content: center; align-items: center;
     overflow: hidden; font-family: sans-serif; touch-action: none; 
   }
 
-  /* NUEVO LIENZO: Llena la pantalla 100% */
+  /* EL TRUCO MATEMÁTICO: Una caja que jamás recorta la imagen */
   #lienzo-juego {
     position: relative;
-    width: 100vw;
+    /* Por defecto, se ajusta a lo alto de la pantalla */
     height: 100vh;
+    width: calc(100vh * 9 / 16);
     transition: transform 0.8s ease-in-out; 
   }
 
-  /* AJUSTE PARA LLENAR LA PANTALLA SIN DEFORMARSE */
+  /* Si la pantalla es más angosta que el dibujo, invertimos la regla para que encaje a lo ancho */
+  @media (max-aspect-ratio: 9/16) {
+    #lienzo-juego {
+      width: 100vw;
+      height: calc(100vw * 16 / 9);
+    }
+  }
+
+  /* LAS IMÁGENES DENTRO DE LA CAJA PERFECTA */
   .fondo-base, .master-frame {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    object-fit: cover; /* Llena toda la pantalla */
-    object-position: center; /* Mantiene el centro del dibujo enfocado */
+    object-fit: fill; /* Ahora encaja perfecto sin cortar ni deformar */
   }
 
   .fondo-base { z-index: 1; }
@@ -50,7 +58,7 @@
   }
   .hitbox {
     position: absolute;
-    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borra esto al final */
+    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borra esto cuando termines de acomodar */
     cursor: pointer;
   }
 
@@ -97,8 +105,6 @@
 
   <img src="img/frame1.png" class="master-frame active">
   <img src="img/frame2.png" class="master-frame">
-  <img src="img/frame3.png" class="master-frame">
-  <img src="img/frame4.png" class="master-frame">
 
   <div id="hitboxes">
     <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
@@ -166,7 +172,7 @@
 </div>
 
 <script>
-  // VELOCIDAD REDUCIDA A 200ms PARA SUAVIZAR EL TEMBLOR
+  // VELOCIDAD A 250ms: Con solo 2 frames, ir un poquito más lento da un efecto artístico muy lindo.
   const frames = document.querySelectorAll('.master-frame');
   let frameActual = 0;
 
@@ -174,7 +180,7 @@
     frames[frameActual].classList.remove('active');
     frameActual = (frameActual + 1) % frames.length;
     frames[frameActual].classList.add('active');
-  }, 200);
+  }, 250);
 
   // ZOOM Y CARTITAS
   const lienzo = document.getElementById('lienzo-juego');
@@ -214,7 +220,7 @@
     }
   }
 
-  // HERRAMIENTA DE CALIBRACIÓN 
+  // HERRAMIENTA DE CALIBRACIÓN (Toca cualquier lado que no sea caja roja para ver coordenadas)
   document.getElementById('hitboxes').addEventListener('click', function(e) {
     if(e.target.classList.contains('hitbox')) return;
     
