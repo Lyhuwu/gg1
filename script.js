@@ -35,7 +35,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/marco.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 70, top: 15, width: 15, height: 11 }
+    hitbox: { left: 70, top: 24, width: 15, height: 11 }
   },
   {
     nombre: "pinwi",
@@ -79,7 +79,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/calendario.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 73, top: 83, width: 18, height: 8 }
+    hitbox: { left: 73, top: 84, width: 18, height: 8 }
   },
   {
     nombre: "sobre",
@@ -108,7 +108,7 @@ const objetos = [
     tipo: "ambos",
     foto: "img/tele.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
-    hitbox: { left: 8, top: 55, width: 20, height: 25 }
+    hitbox: { left: 8, top: 55, width: 32, height: 25 }
   },
 ];
 
