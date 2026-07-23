@@ -8,57 +8,68 @@
   body, html {
     margin: 0; padding: 0;
     width: 100vw; height: 100vh;
-    background-color: #1a1a24; /* Este es el color de las franjas por si sobra pantalla */
+    background-color: #0d0d1a; /* Color de las franjas si tu pantalla es muy larga */
     display: flex; justify-content: center; align-items: center;
     overflow: hidden; font-family: sans-serif; touch-action: none; 
   }
 
-  /* EL TRUCO MATEMÁTICO: Una caja que jamás recorta la imagen */
+  /* EL TRUCO PARA QUE NADA SE CORTE: La caja 9:16 perfecta */
   #lienzo-juego {
     position: relative;
-    /* Por defecto, se ajusta a lo alto de la pantalla */
-    height: 100vh;
-    width: calc(100vh * 9 / 16);
+    width: 100%; height: 100%;
+    aspect-ratio: 9 / 16;
+    max-width: calc(100vh * (9 / 16));
+    max-height: calc(100vw * (16 / 9));
+    margin: auto;
     transition: transform 0.8s ease-in-out; 
   }
 
-  /* Si la pantalla es más angosta que el dibujo, invertimos la regla para que encaje a lo ancho */
-  @media (max-aspect-ratio: 9/16) {
-    #lienzo-juego {
-      width: 100vw;
-      height: calc(100vw * 16 / 9);
-    }
-  }
-
-  /* LAS IMÁGENES DENTRO DE LA CAJA PERFECTA */
-  .fondo-base, .master-frame {
-    position: absolute;
-    top: 0; left: 0;
+  /* El fondo estático que no parpadea nunca */
+  .fondo-base {
+    position: absolute; top: 0; left: 0;
     width: 100%; height: 100%;
-    object-fit: fill; /* Ahora encaja perfecto sin cortar ni deformar */
+    z-index: 1;
   }
 
-  .fondo-base { z-index: 1; }
-  
+  /* Configuración base para los frames animados */
   .master-frame {
-    opacity: 0; 
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
     pointer-events: none; 
     z-index: 2;
+    opacity: 0; 
   }
-  .master-frame.active { 
-    opacity: 1; 
+
+  /* LA MAGIA DE LA FLUIDEZ (ANIMACIÓN CSS PURA) 
+   Cada frame dura 0.15s, sumando 0.45s en total. Sin retrasos ni parpadeos.
+  */
+  #frame1 { animation: showFrame1 0.45s infinite; }
+  #frame2 { animation: showFrame2 0.45s infinite; }
+  #frame3 { animation: showFrame3 0.45s infinite; }
+
+  @keyframes showFrame1 { 
+    0%, 33.33% { opacity: 1; } 
+    33.34%, 100% { opacity: 0; } 
+  }
+  @keyframes showFrame2 { 
+    0%, 33.33% { opacity: 0; } 
+    33.34%, 66.66% { opacity: 1; } 
+    66.67%, 100% { opacity: 0; } 
+  }
+  @keyframes showFrame3 { 
+    0%, 66.66% { opacity: 0; } 
+    66.67%, 100% { opacity: 1; } 
   }
 
   /* HITBOXES */
   #hitboxes {
-    position: absolute;
-    top: 0; left: 0;
+    position: absolute; top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 50; 
   }
   .hitbox {
     position: absolute;
-    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borra esto cuando termines de acomodar */
+    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borrar al terminar de acomodar */
     cursor: pointer;
   }
 
@@ -66,25 +77,25 @@
   .interfaz-ui {
     position: absolute; top: 0; left: 0;
     width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.75);
     z-index: 100;
     display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     opacity: 0; pointer-events: none;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.4s ease;
   }
   .interfaz-ui.visible {
     opacity: 1; pointer-events: auto;
   }
   .cartita {
     background: #fff; color: #333;
-    width: 80%; max-width: 350px;
-    padding: 20px; border-radius: 12px;
+    width: 85%; max-width: 350px;
+    padding: 25px; border-radius: 15px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    transform: scale(0.8); transition: transform 0.5s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    transform: translateY(20px); transition: transform 0.4s ease;
   }
-  .interfaz-ui.visible .cartita { transform: scale(1); }
+  .interfaz-ui.visible .cartita { transform: translateY(0); }
   .foto-recuerdo { width: 100%; border-radius: 8px; margin-top: 15px; }
   .btn-cerrar {
     margin-top: 20px; padding: 10px 20px;
@@ -103,8 +114,9 @@
   
   <img src="img/fondoestatico.png" class="fondo-base" alt="Fondo Habitación">
 
-  <img src="img/frame1.png" class="master-frame active">
-  <img src="img/frame2.png" class="master-frame">
+  <img src="img/frame1.png" id="frame1" class="master-frame">
+  <img src="img/frame2.png" id="frame2" class="master-frame">
+  <img src="img/frame3.png" id="frame3" class="master-frame">
 
   <div id="hitboxes">
     <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
@@ -172,17 +184,10 @@
 </div>
 
 <script>
-  // VELOCIDAD A 250ms: Con solo 2 frames, ir un poquito más lento da un efecto artístico muy lindo.
-  const frames = document.querySelectorAll('.master-frame');
-  let frameActual = 0;
+  // ¡Fíjate cómo ya no hay código JavaScript para la animación de frames!
+  // Ahora todo se procesa súper rápido en el CSS de arriba.
 
-  setInterval(() => {
-    frames[frameActual].classList.remove('active');
-    frameActual = (frameActual + 1) % frames.length;
-    frames[frameActual].classList.add('active');
-  }, 250);
-
-  // ZOOM Y CARTITAS
+  // LÓGICA DE ZOOM Y CARTITAS
   const lienzo = document.getElementById('lienzo-juego');
   let zoomActivo = false;
 
@@ -220,7 +225,7 @@
     }
   }
 
-  // HERRAMIENTA DE CALIBRACIÓN (Toca cualquier lado que no sea caja roja para ver coordenadas)
+  // HERRAMIENTA DE CALIBRACIÓN (Toca para ver coordenadas)
   document.getElementById('hitboxes').addEventListener('click', function(e) {
     if(e.target.classList.contains('hitbox')) return;
     
