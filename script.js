@@ -337,8 +337,9 @@ function manejarToque(clientX, clientY) {
   }
 }
 
+// ===== LA SOLUCIÓN DEL GHOST CLICK ESTÁ AQUÍ =====
 stage.addEventListener(
-  "pointerdown",
+  "click", // Ignoramos el "pointerdown" y esperamos al "click" real
   (ev) => {
     if (modalAbierto) return;
     manejarToque(ev.clientX, ev.clientY);
@@ -355,7 +356,7 @@ const modalCerrar = document.getElementById("modal-cerrar");
 const modalFondo = document.getElementById("modal-fondo");
 
 let modalAbierto = false;
-let musicaFondo = null; // Variable persistente para la música
+let musicaFondo = null; 
 
 function abrirModal(configObjeto, xRel, yRel) {
   modalAbierto = true;
@@ -373,13 +374,11 @@ function abrirModal(configObjeto, xRel, yRel) {
     modalCartaTexto.textContent = configObjeto.carta || "";
   }
 
-  // Reproduce la música de fondo y la mantiene encendida
   if (configObjeto.audio) {
     if (!musicaFondo) {
       musicaFondo = new Audio(configObjeto.audio);
-      musicaFondo.loop = true; // Hace que la canción se repita sola si se acaba
+      musicaFondo.loop = true; 
     }
-    // Solo le da play si estaba pausada, para que no se empalme si le vuelve a dar click
     if (musicaFondo.paused) {
       musicaFondo.play().catch(e => console.log("El navegador bloqueó el autoplay de audio.", e));
     }
@@ -395,8 +394,6 @@ function cerrarModal() {
   modal.setAttribute("aria-hidden", "true");
   stage.classList.remove("zoom");
   overlayOscuro.classList.remove("visible");
-  
-  // Como puedes notar, ¡aquí ya no hay código para apagar la música!
 }
 
 modalCerrar.addEventListener("click", cerrarModal);
@@ -417,7 +414,6 @@ function mostrarInfoDebug(porcX, porcY) {
   panelDebug.textContent = `TOCASTE EN:\nleft: ${porcX.toFixed(1)}%\ntop: ${porcY.toFixed(1)}%`;
 }
 
-// ===== ASISTENTE VISUAL DE HITBOXES =====
 function activarContornosDebug() {
   document.querySelectorAll(".objeto").forEach((el) => el.classList.add("debug-contorno"));
 
