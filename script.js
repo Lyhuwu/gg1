@@ -14,8 +14,9 @@ const objetos = [
     capa: 2,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/ventana.jpg", // Recuerda subir esta foto a tu carpeta img
+    foto: "img/ventana.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
+    hitbox: { left: 30, top: 10, width: 40, height: 20 }
   },
   {
     nombre: "florero",
@@ -31,8 +32,9 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/marco.jpg", // Recuerda subir esta foto a tu carpeta img
+    foto: "img/marco.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
+    hitbox: { left: 10, top: 40, width: 15, height: 10 }
   },
   {
     nombre: "pinwi",
@@ -41,8 +43,9 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/pinwi.jpg", // Recuerda subir esta foto a tu carpeta img
+    foto: "img/pinwi.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
+    hitbox: { left: 60, top: 45, width: 20, height: 15 }
   },
   {
     nombre: "planta",
@@ -65,8 +68,9 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/pollito.jpg", // Recuerda subir esta foto a tu carpeta img
+    foto: "img/pollito.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
+    hitbox: { left: 40, top: 60, width: 15, height: 10 }
   },
   {
     nombre: "poster",
@@ -75,8 +79,9 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/poster.jpg", // Recuerda subir esta foto a tu carpeta img
+    foto: "img/poster.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!", 
+    hitbox: { left: 10, top: 25, width: 20, height: 25 }
   },
   {
     nombre: "calendario",
@@ -84,9 +89,10 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 4,
     interactivo: true,
-     tipo: "ambos",
-    foto: "img/calendario.jpg", // Recuerda subir esta foto a tu carpeta img
+    tipo: "ambos",
+    foto: "img/calendario.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
+    hitbox: { left: 70, top: 70, width: 20, height: 15 }
   },
   {
     nombre: "sobre",
@@ -96,6 +102,7 @@ const objetos = [
     interactivo: true,
     tipo: "carta",
     carta: "Escribí acá el texto de la carta que querés mostrar cuando se toca el sobre.",
+    hitbox: { left: 70, top: 80, width: 20, height: 10 }
   },
   {
     nombre: "tocadiscos",
@@ -103,6 +110,7 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 10,
     interactivo: true,
+    hitbox: { left: 10, top: 70, width: 25, height: 15 }
   },
   {
     nombre: "tele",
@@ -111,8 +119,9 @@ const objetos = [
     capa: 10,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/tele.jpg", // Recuerda subir esta foto a tu carpeta img
+    foto: "img/tele.jpg", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
+    hitbox: { left: 35, top: 50, width: 30, height: 15 }
   },
 ];
 
@@ -298,12 +307,25 @@ function manejarToque(clientX, clientY) {
   const yRel = (clientY - rect.top) / rect.height;
   if (xRel < 0 || xRel > 1 || yRel < 0 || yRel > 1) return;
 
-  const dx = xRel * LIENZO_ANCHO;
-  const dy = yRel * LIENZO_ALTO;
+  const clickPorcX = xRel * 100;
+  const clickPorcY = yRel * 100;
 
-  if (modoDebug) mostrarInfoDebug(dx, dy);
+  if (modoDebug) mostrarInfoDebug(clickPorcX, clickPorcY);
 
   for (const estado of interactivosOrdenados()) {
+    if (estado.config.hitbox) {
+      const hb = estado.config.hitbox;
+      if (clickPorcX >= hb.left && clickPorcX <= (hb.left + hb.width) &&
+          clickPorcY >= hb.top && clickPorcY <= (hb.top + hb.height)) {
+        abrirModal(estado.config, xRel, yRel);
+        return; 
+      }
+      continue; 
+    }
+
+    const dx = xRel * LIENZO_ANCHO;
+    const dy = yRel * LIENZO_ALTO;
+    
     const region = estado.config.region || { x: 0, y: 0, w: 100, h: 100 };
     const cajaX = (region.x / 100) * LIENZO_ANCHO;
     const cajaY = (region.y / 100) * LIENZO_ALTO;
@@ -380,17 +402,47 @@ document.addEventListener("keydown", (ev) => {
 const modoDebug = new URLSearchParams(location.search).has("debug");
 let panelDebug = null;
 
-function mostrarInfoDebug(dx, dy) {
+function mostrarInfoDebug(porcX, porcY) {
   if (!panelDebug) {
     panelDebug = document.createElement("div");
     panelDebug.id = "debug-info";
     document.body.appendChild(panelDebug);
   }
-  panelDebug.textContent = `toque en lienzo: x=${dx.toFixed(0)}  y=${dy.toFixed(0)}`;
+  panelDebug.textContent = `TOCASTE EN:\nleft: ${porcX.toFixed(1)}%\ntop: ${porcY.toFixed(1)}%`;
 }
 
+// ===== ASISTENTE VISUAL DE HITBOXES =====
 function activarContornosDebug() {
   document.querySelectorAll(".objeto").forEach((el) => el.classList.add("debug-contorno"));
+
+  // Dibuja las cajas rojas en pantalla basándose en tu configuración
+  objetos.forEach(obj => {
+    if (obj.hitbox) {
+      const cajaRoja = document.createElement("div");
+      cajaRoja.style.position = "absolute";
+      cajaRoja.style.left = obj.hitbox.left + "%";
+      cajaRoja.style.top = obj.hitbox.top + "%";
+      cajaRoja.style.width = obj.hitbox.width + "%";
+      cajaRoja.style.height = obj.hitbox.height + "%";
+      cajaRoja.style.backgroundColor = "rgba(255, 0, 0, 0.4)";
+      cajaRoja.style.border = "2px solid red";
+      cajaRoja.style.zIndex = "999";
+      cajaRoja.style.pointerEvents = "none"; 
+      
+      const etiqueta = document.createElement("span");
+      etiqueta.textContent = obj.nombre;
+      etiqueta.style.color = "white";
+      etiqueta.style.backgroundColor = "black";
+      etiqueta.style.fontSize = "12px";
+      etiqueta.style.padding = "2px";
+      etiqueta.style.position = "absolute";
+      etiqueta.style.top = "0";
+      etiqueta.style.left = "0";
+      
+      cajaRoja.appendChild(etiqueta);
+      stage.appendChild(cajaRoja);
+    }
+  });
 }
 
 precargarTodo().then(() => {
