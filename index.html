@@ -8,53 +8,49 @@
   body, html {
     margin: 0; padding: 0;
     width: 100vw; height: 100vh;
-    background-color: #0d0d1a;
-    overflow: hidden;
-    font-family: sans-serif;
-    touch-action: none; 
+    background-color: #1a1a24; /* Fondo oscuro por si la pantalla es muy larga */
+    display: flex; justify-content: center; align-items: center;
+    overflow: hidden; font-family: sans-serif; touch-action: none; 
   }
 
-  #camara {
-    width: 100%; height: 100%;
+  /* EL LIENZO PERFECTO: Nunca recortará tu imagen */
+  #lienzo-juego {
     position: relative;
+    width: 100%; 
+    max-height: 100vh; 
+    aspect-ratio: 9/16; /* Fuerza la proporción exacta de tu dibujo */
     transition: transform 0.8s ease-in-out; 
   }
 
-  .capa {
+  .master-frame {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: cover; 
+    opacity: 0; 
     pointer-events: none; 
   }
-
-  /* --- AQUÍ ESTÁ EL PRIMER AJUSTE: TRANSICIÓN SUAVE --- */
-  .anim-group img { 
-    opacity: 0; 
-    transition: opacity 0.1s ease; 
-  }
-  .anim-group img.active { 
+  .master-frame.active { 
     opacity: 1; 
   }
 
+  /* HITBOXES (Cajas rojas) */
   #hitboxes {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 50; 
   }
-  
   .hitbox {
     position: absolute;
-    /* Borra o comenta la siguiente línea cuando ya no necesites ver los cuadros rojos */
-    border: 3px solid red; background: rgba(255, 0, 0, 0.3);
+    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borra esto al final */
     cursor: pointer;
   }
 
-  /* INTERFACES */
+  /* INTERFACES (Cartitas) */
   .interfaz-ui {
     position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100vw; height: 100vh;
     background: rgba(0, 0, 0, 0.7);
     z-index: 100;
     display: flex; flex-direction: column;
@@ -88,107 +84,16 @@
   <source src="cancion.mp3" type="audio/mpeg">
 </audio>
 
-<div id="camara">
+<div id="lienzo-juego">
   
-  <!-- === CAPAS === -->
-  <img src="img/1-fondo.png" class="capa" alt="Fondo">
-  <img src="img/2-mesita1.png" class="capa" alt="Mesita">
-
-  <div class="anim-group" data-frames="3">
-    <img src="img/2-mueble1.png" class="capa active">
-    <img src="img/2-mueble2.png" class="capa">
-    <img src="img/2-mueble3.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="3">
-    <img src="img/2-sofa1.png" class="capa active">
-    <img src="img/2-sofa2.png" class="capa">
-    <img src="img/2-sofa3.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="3">
-    <img src="img/2-ventana1.png" class="capa active">
-    <img src="img/2-ventana2.png" class="capa">
-    <img src="img/2-ventana3.png" class="capa">
-  </div>
-
-  <img src="img/3-sombra.png" class="capa">
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/4-calendario1.png" class="capa active">
-    <img src="img/4-calendario2.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/4-florero1.png" class="capa active">
-    <img src="img/4-florerl2.png" class="capa"> 
-  </div>
-
-  <img src="img/4-libreria.png" class="capa">
-
-  <div class="anim-group" data-frames="4">
-    <img src="img/4-marco1.png" class="capa active">
-    <img src="img/4-marco2.png" class="capa">
-    <img src="img/4-marco3.png" class="capa">
-    <img src="img/4-marco4.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/4-pinwi1.png" class="capa active">
-    <img src="img/4-pinwi2.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/4-planta1.png" class="capa active">
-    <img src="img/4-planta2.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/4-plantas1.png" class="capa active">
-    <img src="img/4-plantas2.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="4">
-    <img src="img/4-pollito1.png" class="capa active">
-    <img src="img/4-pollito2.png" class="capa">
-    <img src="img/4-pollito3.png" class="capa">
-    <img src="img/4-pollito4.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="3">
-    <img src="img/4-poster1.png" class="capa active">
-    <img src="img/4-poster2.png" class="capa">
-    <img src="img/4-poster3.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="3">
-    <img src="img/4-sobre1.png" class="capa active">
-    <img src="img/4-sobre2.png" class="capa">
-    <img src="img/4-sobre3.png" class="capa">
-  </div>
-
-  <img src="img/6-rayas.png" class="capa">
-  <img src="img/7-plantota.png" class="capa">
-
-  <div class="anim-group" data-frames="3">
-    <img src="img/9-mesitadenoche1.png" class="capa active">
-    <img src="img/9-mesitadenoche2.png" class="capa">
-    <img src="img/9-mesitadenoche3.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/10-tocadiscos1.png" class="capa active">
-    <img src="img/10-tocadiscos2.png" class="capa">
-  </div>
-
-  <div class="anim-group" data-frames="2">
-    <img src="img/10-tele1.png" class="capa active">
-    <img src="img/10-tele2.png" class="capa">
-  </div>
+  <!-- === TUS 4 FRAMES MAESTROS === -->
+  <img src="img/dibujo1.png" class="master-frame active">
+  <img src="img/dibujo2.png" class="master-frame">
+  <img src="img/dibujo3.png" class="master-frame">
+  <img src="img/dibujo4.png" class="master-frame">
 
   <!-- === CAJAS ROJAS (HITBOXES) === -->
   <div id="hitboxes">
-    <!-- Ajusta los valores de top y left para cada cuadrito interactivo -->
     <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
     <div class="hitbox" style="top: 45%; left: 60%; width: 20%; height: 15%;" onclick="activarInteraccion('70%', '50%', 'ui-pinwi')"></div>
     <div class="hitbox" style="top: 40%; left: 10%; width: 15%; height: 10%;" onclick="activarInteraccion('15%', '45%', 'ui-marco')"></div>
@@ -204,11 +109,10 @@
 <div id="ui-ventana" class="interfaz-ui">
   <div class="cartita">
     <h2>Recordando nuestro inicio</h2>
-    <p>Escribe aquí tu mensaje sobre la ventana...</p>
+    <p>Mensaje sobre la ventana...</p>
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Cerrar</button>
   </div>
 </div>
-
 <div id="ui-pinwi" class="interfaz-ui">
   <div class="cartita">
     <h2>Un momento especial</h2>
@@ -217,7 +121,6 @@
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Regresar</button>
   </div>
 </div>
-
 <div id="ui-marco" class="interfaz-ui">
   <div class="cartita">
     <h2>El Marco</h2>
@@ -225,7 +128,6 @@
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Cerrar</button>
   </div>
 </div>
-
 <div id="ui-pollito" class="interfaz-ui">
   <div class="cartita">
     <h2>El Pollito</h2>
@@ -233,7 +135,6 @@
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Cerrar</button>
   </div>
 </div>
-
 <div id="ui-poster" class="interfaz-ui">
   <div class="cartita">
     <h2>Nuestro Póster</h2>
@@ -242,7 +143,6 @@
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Cerrar</button>
   </div>
 </div>
-
 <div id="ui-tele" class="interfaz-ui">
   <div class="cartita">
     <h2>La Tele</h2>
@@ -251,7 +151,6 @@
     <button class="btn-cerrar" onclick="cerrarInteraccion()">Cerrar</button>
   </div>
 </div>
-
 <div id="ui-sobre" class="interfaz-ui">
   <div class="cartita" style="background: #fff9e6;">
     <h2>¡Feliz Aniversario!</h2>
@@ -261,29 +160,26 @@
 </div>
 
 <script>
-  // --- AQUÍ ESTÁ EL SEGUNDO AJUSTE: VELOCIDAD A 80 MILISEGUNDOS ---
-  setInterval(() => {
-    const grupos = document.querySelectorAll('.anim-group');
-    grupos.forEach(grupo => {
-      const frames = grupo.querySelectorAll('img');
-      let indexActivo = Array.from(frames).findIndex(img => img.classList.contains('active'));
-      
-      frames[indexActivo].classList.remove('active');
-      let siguienteIndex = (indexActivo + 1) % frames.length;
-      frames[siguienteIndex].classList.add('active');
-    });
-  }, 80);
+  // ANIMACIÓN LIGERA (100 milisegundos para que se vea como animación clásica a 10fps)
+  const frames = document.querySelectorAll('.master-frame');
+  let frameActual = 0;
 
-  // LÓGICA DE ZOOM
-  const camara = document.getElementById('camara');
+  setInterval(() => {
+    frames[frameActual].classList.remove('active');
+    frameActual = (frameActual + 1) % frames.length;
+    frames[frameActual].classList.add('active');
+  }, 100);
+
+  // ZOOM Y CARTITAS
+  const lienzo = document.getElementById('lienzo-juego');
   let zoomActivo = false;
 
   function activarInteraccion(x, y, idUi) {
     if (zoomActivo) return; 
     zoomActivo = true;
 
-    camara.style.transformOrigin = `${x} ${y}`;
-    camara.style.transform = 'scale(3.5)';
+    lienzo.style.transformOrigin = `${x} ${y}`;
+    lienzo.style.transform = 'scale(3.5)';
 
     setTimeout(() => {
       const ui = document.getElementById(idUi);
@@ -294,15 +190,14 @@
   function cerrarInteraccion() {
     document.querySelectorAll('.interfaz-ui').forEach(ui => ui.classList.remove('visible'));
     setTimeout(() => {
-      camara.style.transform = 'scale(1)';
+      lienzo.style.transform = 'scale(1)';
       zoomActivo = false;
     }, 300);
   }
 
-  // LÓGICA DE MÚSICA
+  // MÚSICA
   const musica = document.getElementById('musica-fondo');
   let estaSonando = false;
-
   function reproducirMusica() {
     if (estaSonando) {
       musica.pause();
@@ -312,6 +207,19 @@
       estaSonando = true;
     }
   }
+
+  // ==========================================
+  // HERRAMIENTA DE CALIBRACIÓN (BORRAR DESPUÉS)
+  // ==========================================
+  document.getElementById('hitboxes').addEventListener('click', function(e) {
+    if(e.target.classList.contains('hitbox')) return;
+    
+    let rect = this.getBoundingClientRect();
+    let x = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+    let y = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+    
+    alert(`TOCASTE EN:\nX (left): ${x}%\nY (top): ${y}%`);
+  });
 </script>
 
 </body>
