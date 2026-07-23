@@ -8,30 +8,22 @@
 </head>
 <body>
 
-  <!-- Pantalla de carga: evita mostrar la escena a medias mientras precargan las imágenes -->
   <div id="pantalla-carga">
     <div id="barra-carga-contenedor">
       <div id="barra-carga"></div>
     </div>
   </div>
 
-  <!-- Envoltorio que centra el escenario y recorta cualquier sobrante -->
   <div id="stage-wrapper">
-    <!-- El escenario mantiene siempre la proporción 1080x1920 del fondo -->
     <div id="stage">
-      <!-- El fondo estático se pinta una sola vez, nunca se vuelve a tocar -->
-      <img id="fondo" src="fondoestatico.png" alt="" draggable="false">
+      <!-- Fondo estático con su ruta correcta en img/ -->
+      <img id="fondo" src="img/fondoestatico.png" alt="" draggable="false">
 
-      <!-- Aquí script.js inyecta, por cada objeto de la config, un contenedor
-           con una capa por cada frame de su animación -->
       <div id="capa-objetos"></div>
-
-      <!-- Overlay que oscurece la escena cuando se abre una ventana modal -->
       <div id="overlay-oscuro"></div>
     </div>
   </div>
 
-  <!-- Ventana modal elegante: foto o carta -->
   <div id="modal" aria-hidden="true">
     <div id="modal-fondo"></div>
     <div id="modal-contenido">
