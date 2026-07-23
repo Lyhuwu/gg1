@@ -15,7 +15,7 @@ const objetos = [
     capa: 2,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/ventana.jpg", 
+    foto: "img/ventana.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
     hitbox: { left: 35, top: 5, width: 35, height: 11 }
   },
@@ -33,7 +33,7 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/marco.jpg", 
+    foto: "img/marco.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
     hitbox: { left: 71.5, top: 18, width: 15, height: 11 }
   },
@@ -44,7 +44,7 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/pinwi.jpg", 
+    foto: "img/pinwi.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
     hitbox: { left: 12, top: 12, width: 22, height: 21 }
   },
@@ -55,7 +55,7 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/pollito.jpg", 
+    foto: "img/pollito.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
     hitbox: { left: 62, top: 34, width: 22, height: 8 }
   },
@@ -66,7 +66,7 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/poster.jpg", 
+    foto: "img/póster.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!", 
     hitbox: { left: 0, top: 34, width: 16, height: 20 }
   },
@@ -77,7 +77,7 @@ const objetos = [
     capa: 4,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/calendario.jpg", 
+    foto: "img/calendario.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
     hitbox: { left: 73, top: 84, width: 18, height: 8 }
   },
@@ -87,7 +87,8 @@ const objetos = [
     velocidad: VELOCIDAD.RAPIDA,
     capa: 4,
     interactivo: true,
-    tipo: "carta",
+    tipo: "ambos",
+    foto: "img/sobre.jpe",
     carta: "Escribí acá el texto de la carta que querés mostrar cuando se toca el sobre.",
     hitbox: { left: 82, top: 92, width: 15, height: 8 }
   },
@@ -97,6 +98,9 @@ const objetos = [
     velocidad: VELOCIDAD.NORMAL,
     capa: 10,
     interactivo: true,
+    tipo: "carta",
+    carta: "Nuestra canción especial...",
+    audio: "img/cancion.mp4", 
     hitbox: { left: 8, top: 85, width: 22, height: 14 }
   },
   {
@@ -106,7 +110,7 @@ const objetos = [
     capa: 10,
     interactivo: true,
     tipo: "ambos",
-    foto: "img/tele.jpg", 
+    foto: "img/tele.jpe", 
     carta: "Esta es la fecha en la que empezó todo. ¡Te quiero muchísimo, Sofi!",
     hitbox: { left: 8, top: 55, width: 32, height: 25 }
   },
@@ -351,6 +355,7 @@ const modalCerrar = document.getElementById("modal-cerrar");
 const modalFondo = document.getElementById("modal-fondo");
 
 let modalAbierto = false;
+let musicaFondo = null; // Variable persistente para la música
 
 function abrirModal(configObjeto, xRel, yRel) {
   modalAbierto = true;
@@ -368,6 +373,18 @@ function abrirModal(configObjeto, xRel, yRel) {
     modalCartaTexto.textContent = configObjeto.carta || "";
   }
 
+  // Reproduce la música de fondo y la mantiene encendida
+  if (configObjeto.audio) {
+    if (!musicaFondo) {
+      musicaFondo = new Audio(configObjeto.audio);
+      musicaFondo.loop = true; // Hace que la canción se repita sola si se acaba
+    }
+    // Solo le da play si estaba pausada, para que no se empalme si le vuelve a dar click
+    if (musicaFondo.paused) {
+      musicaFondo.play().catch(e => console.log("El navegador bloqueó el autoplay de audio.", e));
+    }
+  }
+
   modal.classList.add("abierto");
   modal.setAttribute("aria-hidden", "false");
 }
@@ -378,6 +395,8 @@ function cerrarModal() {
   modal.setAttribute("aria-hidden", "true");
   stage.classList.remove("zoom");
   overlayOscuro.classList.remove("visible");
+  
+  // Como puedes notar, ¡aquí ya no hay código para apagar la música!
 }
 
 modalCerrar.addEventListener("click", cerrarModal);
@@ -402,7 +421,6 @@ function mostrarInfoDebug(porcX, porcY) {
 function activarContornosDebug() {
   document.querySelectorAll(".objeto").forEach((el) => el.classList.add("debug-contorno"));
 
-  // Dibuja las cajas rojas en pantalla basándose en tu configuración
   objetos.forEach(obj => {
     if (obj.hitbox) {
       const cajaRoja = document.createElement("div");
