@@ -13,31 +13,26 @@
     overflow: hidden; font-family: sans-serif; touch-action: none; 
   }
 
-  /* CONTENEDOR PRINCIPAL */
+  /* NUEVO LIENZO: Llena la pantalla 100% */
   #lienzo-juego {
     position: relative;
     width: 100vw;
-    height: calc(100vw * 16 / 9);
-    max-height: 100vh;
-    max-width: calc(100vh * 9 / 16);
+    height: 100vh;
     transition: transform 0.8s ease-in-out; 
   }
 
-  /* FONDO ESTÁTICO */
-  .fondo-base {
+  /* AJUSTE PARA LLENAR LA PANTALLA SIN DEFORMARSE */
+  .fondo-base, .master-frame {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    object-fit: fill; 
-    z-index: 1;
+    object-fit: cover; /* Llena toda la pantalla */
+    object-position: center; /* Mantiene el centro del dibujo enfocado */
   }
 
-  /* CAPAS ANIMADAS */
+  .fondo-base { z-index: 1; }
+  
   .master-frame {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: fill; 
     opacity: 0; 
     pointer-events: none; 
     z-index: 2;
@@ -46,7 +41,7 @@
     opacity: 1; 
   }
 
-  /* HITBOXES (TUS 8 CAJAS) */
+  /* HITBOXES */
   #hitboxes {
     position: absolute;
     top: 0; left: 0;
@@ -55,7 +50,7 @@
   }
   .hitbox {
     position: absolute;
-    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borra esto al final cuando acomodes todo */
+    border: 3px solid red; background: rgba(255, 0, 0, 0.3); /* Borra esto al final */
     cursor: pointer;
   }
 
@@ -98,37 +93,25 @@
 
 <div id="lienzo-juego">
   
-  <!-- === 1. TU FONDO ESTÁTICO === -->
   <img src="img/fondoestatico.png" class="fondo-base" alt="Fondo Habitación">
 
-  <!-- === 2. TUS 4 FRAMES ANIMADOS === -->
   <img src="img/frame1.png" class="master-frame active">
   <img src="img/frame2.png" class="master-frame">
   <img src="img/frame3.png" class="master-frame">
   <img src="img/frame4.png" class="master-frame">
 
-  <!-- === TUS 8 CAJAS ROJAS === -->
   <div id="hitboxes">
-    <!-- 1. Ventana -->
     <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
-    <!-- 2. Pingüino -->
     <div class="hitbox" style="top: 45%; left: 60%; width: 20%; height: 15%;" onclick="activarInteraccion('70%', '50%', 'ui-pinwi')"></div>
-    <!-- 3. Marco -->
     <div class="hitbox" style="top: 40%; left: 10%; width: 15%; height: 10%;" onclick="activarInteraccion('15%', '45%', 'ui-marco')"></div>
-    <!-- 4. Pollito -->
     <div class="hitbox" style="top: 60%; left: 40%; width: 15%; height: 10%;" onclick="activarInteraccion('45%', '65%', 'ui-pollito')"></div>
-    <!-- 5. Póster -->
     <div class="hitbox" style="top: 25%; left: 10%; width: 20%; height: 25%;" onclick="activarInteraccion('20%', '35%', 'ui-poster')"></div>
-    <!-- 6. Tele -->
     <div class="hitbox" style="top: 50%; left: 35%; width: 30%; height: 15%;" onclick="activarInteraccion('50%', '55%', 'ui-tele')"></div>
-    <!-- 7. Sobre -->
     <div class="hitbox" style="top: 80%; left: 70%; width: 20%; height: 10%;" onclick="activarInteraccion('50%', '50%', 'ui-sobre')"></div>
-    <!-- 8. Tocadiscos -->
     <div class="hitbox" style="top: 70%; left: 10%; width: 25%; height: 15%;" onclick="reproducirMusica()"></div>
   </div>
 </div>
 
-<!-- === CARTITAS === -->
 <div id="ui-ventana" class="interfaz-ui">
   <div class="cartita">
     <h2>Recordando nuestro inicio</h2>
@@ -183,7 +166,7 @@
 </div>
 
 <script>
-  // ANIMACIÓN LIGERA (Cambia de frame cada 150 milisegundos)
+  // VELOCIDAD REDUCIDA A 200ms PARA SUAVIZAR EL TEMBLOR
   const frames = document.querySelectorAll('.master-frame');
   let frameActual = 0;
 
@@ -191,7 +174,7 @@
     frames[frameActual].classList.remove('active');
     frameActual = (frameActual + 1) % frames.length;
     frames[frameActual].classList.add('active');
-  }, 150);
+  }, 200);
 
   // ZOOM Y CARTITAS
   const lienzo = document.getElementById('lienzo-juego');
@@ -231,7 +214,7 @@
     }
   }
 
-  // HERRAMIENTA DE CALIBRACIÓN (Toca cualquier lado que no sea caja roja para ver coordenadas)
+  // HERRAMIENTA DE CALIBRACIÓN 
   document.getElementById('hitboxes').addEventListener('click', function(e) {
     if(e.target.classList.contains('hitbox')) return;
     
