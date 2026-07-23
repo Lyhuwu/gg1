@@ -8,17 +8,16 @@
   body, html {
     margin: 0; padding: 0;
     width: 100vw; height: 100vh;
-    background-color: #1a1a24; /* Fondo oscuro por si la pantalla es muy larga */
+    background-color: #1a1a24; 
     display: flex; justify-content: center; align-items: center;
     overflow: hidden; font-family: sans-serif; touch-action: none; 
   }
 
-  /* EL LIENZO PERFECTO: Nunca recortará tu imagen */
   #lienzo-juego {
     position: relative;
     width: 100%; 
     max-height: 100vh; 
-    aspect-ratio: 9/16; /* Fuerza la proporción exacta de tu dibujo */
+    aspect-ratio: 9/16; 
     transition: transform 0.8s ease-in-out; 
   }
 
@@ -29,12 +28,14 @@
     object-fit: cover; 
     opacity: 0; 
     pointer-events: none; 
+    /* ESTA ES LA LÍNEA MÁGICA PARA LA FLUIDEZ (El fundido suave) */
+    transition: opacity 0.15s ease-in-out; 
   }
   .master-frame.active { 
     opacity: 1; 
   }
 
-  /* HITBOXES (Cajas rojas) */
+  /* HITBOXES */
   #hitboxes {
     position: absolute;
     top: 0; left: 0;
@@ -47,7 +48,7 @@
     cursor: pointer;
   }
 
-  /* INTERFACES (Cartitas) */
+  /* INTERFACES */
   .interfaz-ui {
     position: absolute; top: 0; left: 0;
     width: 100vw; height: 100vh;
@@ -92,7 +93,7 @@
   <img src="img/dibujo3.png" class="master-frame">
   <img src="img/dibujo4.png" class="master-frame">
 
-  <!-- === CAJAS ROJAS (HITBOXES) === -->
+  <!-- === CAJAS ROJAS === -->
   <div id="hitboxes">
     <div class="hitbox" style="top: 10%; left: 30%; width: 40%; height: 20%;" onclick="activarInteraccion('50%', '20%', 'ui-ventana')"></div>
     <div class="hitbox" style="top: 45%; left: 60%; width: 20%; height: 15%;" onclick="activarInteraccion('70%', '50%', 'ui-pinwi')"></div>
@@ -160,7 +161,7 @@
 </div>
 
 <script>
-  // ANIMACIÓN LIGERA (100 milisegundos para que se vea como animación clásica a 10fps)
+  // VELOCIDAD AJUSTADA A 180ms PARA UN RITMO MÁS ORGÁNICO
   const frames = document.querySelectorAll('.master-frame');
   let frameActual = 0;
 
@@ -168,7 +169,7 @@
     frames[frameActual].classList.remove('active');
     frameActual = (frameActual + 1) % frames.length;
     frames[frameActual].classList.add('active');
-  }, 100);
+  }, 180);
 
   // ZOOM Y CARTITAS
   const lienzo = document.getElementById('lienzo-juego');
@@ -208,9 +209,7 @@
     }
   }
 
-  // ==========================================
-  // HERRAMIENTA DE CALIBRACIÓN (BORRAR DESPUÉS)
-  // ==========================================
+  // HERRAMIENTA DE CALIBRACIÓN 
   document.getElementById('hitboxes').addEventListener('click', function(e) {
     if(e.target.classList.contains('hitbox')) return;
     
